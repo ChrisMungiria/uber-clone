@@ -1,6 +1,7 @@
 import { SafeAreaView, Text, Platform, View, Image } from "react-native";
 import React from "react";
 import { StatusBar } from "react-native";
+import NavOptions from "../components/NavOptions";
 
 const HomeScreen = () => {
   return (
@@ -21,6 +22,7 @@ const HomeScreen = () => {
             uri: "https://links.papareact.com/gzs",
           }}
         />
+        <NavOptions />
       </View>
     </SafeAreaView>
   );
