@@ -1,7 +1,9 @@
-import { SafeAreaView, Text, Platform, View, Image } from "react-native";
+import { SafeAreaView, Platform, View, Image } from "react-native";
 import React from "react";
 import { StatusBar } from "react-native";
 import NavOptions from "../components/NavOptions";
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { GOOGLE_MAPS_API_KEY } from "@env";
 
 const HomeScreen = () => {
   return (
@@ -21,6 +23,31 @@ const HomeScreen = () => {
           source={{
             uri: "https://links.papareact.com/gzs",
           }}
+        />
+        <GooglePlacesAutocomplete
+          styles={{
+            container: {
+              flex: 0,
+            },
+            textInput: {
+              fontSize: 18,
+            },
+          }}
+          onPress={(data, details = null) => {
+            console.log(JSON.stringify(data, null, 2));
+            console.log(JSON.stringify(details, null, 2));
+          }}
+          fetchDetails={true}
+          minLength={2}
+          enablePoweredByContainer={false}
+          returnKeyType={"search"}
+          query={{
+            key: GOOGLE_MAPS_API_KEY,
+            language: "en",
+          }}
+          nearbyPlacesAPI="GooglePlacesSearch"
+          debounce={400}
+          placeholder="Where From?"
         />
         <NavOptions />
       </View>
