@@ -22,7 +22,7 @@ export default function App() {
               }}
             />
             <Stack.Screen
-              name="MapScresn"
+              name="MapScreen"
               component={MapScreen}
               options={{
                 headerShown: false,
