@@ -9,6 +9,8 @@ import {
 import React, { useState } from "react";
 import { Icon } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { selectTravelTimeInformation } from "../slices/navSlice";
 
 const data = [
   {
@@ -31,10 +33,14 @@ const data = [
   },
 ];
 
+const CHARGE_RATE = 1.5;
+
 const RideOptionsCard = () => {
   const navigation = useNavigation();
 
   const [selected, setSelected] = useState(null);
+
+  const travelTimeInformation = useSelector(selectTravelTimeInformation);
   return (
     <SafeAreaView className="bg-white flex-grow">
       <View>
@@ -46,7 +52,9 @@ const RideOptionsCard = () => {
         >
           <Icon name="chevron-left" type="fontawesome" />
         </TouchableOpacity>
-        <Text className="text-center py-5 text-xl">Select a ride</Text>
+        <Text className="text-center py-5 text-xl">
+          Select a ride - {travelTimeInformation?.distance.text}
+        </Text>
       </View>
       <FlatList
         data={data}
@@ -56,7 +64,7 @@ const RideOptionsCard = () => {
             onPress={() => {
               setSelected(item);
             }}
-            className={`flex-row items-center justify-between w-5/6 mx-auto px-2 ${
+            className={`flex-row items-center justify-around w-5/6 mx-auto px-2 ${
               id === selected?.id && "border border-black rounded-lg"
             }`}
           >
@@ -66,13 +74,23 @@ const RideOptionsCard = () => {
             />
             <View className="-ml-6">
               <Text className="text-xl font-semibold">{title}</Text>
-              <Text>Travel time...</Text>
+              <Text>{travelTimeInformation?.duration.text}</Text>
             </View>
-            <Text className="text-xl">$99</Text>
+            <Text className="text-xl">
+              {new Intl.NumberFormat("en-gb", {
+                style: "currency",
+                currency: "KSH",
+              }).format(
+                (travelTimeInformation?.duration.value *
+                  CHARGE_RATE *
+                  multiplier) /
+                  10
+              )}
+            </Text>
           </TouchableOpacity>
         )}
       />
-      <View>
+      <View className="mt-auto border-t border-gray-200">
         <TouchableOpacity
           className={`bg-black py-3 m-3 ${!selected && "bg-gray-300"}`}
           disabled={!selected}
